@@ -17,11 +17,13 @@ Particle.prototype.init = function(destinationX, destinationY) {
 	this.properties.color = this.properties.colors[this.getRandom(0, 4)];
 	this.properties.x = this.giveDestinationX();
 	this.properties.y = this.giveDestinationY();
+	this.properties.destinationX = destinationX;
+	this.properties.destinationY = destinationY;
 
 	// Draw the Particle when instanced
 	this.draw();
 
-	this.updatePosition(destinationX, destinationY);
+	this.updatePosition(this.properties.destinationX, this.properties.destinationY);
 }
 
 // Method which draw a Particle
@@ -48,10 +50,10 @@ Particle.prototype.updatePosition = function(destinationX, destinationY) {
 		// },
 		ease: Power1.easeInOut,
 		x: destinationX,
-		y: destinationY
-		// onComplete: function() {
-		// 	self.updatePosition(destinationX + self.getRandom(-10, 10), destinationY + self.getRandom(-10, 10));
-		// }
+		y: destinationY,
+		onComplete: function() {
+			self.updatePosition(self.properties.destinationX + self.getRandom(-10, 10), self.properties.destinationY + self.getRandom(-10, 10));
+		}
 	});
 }
 

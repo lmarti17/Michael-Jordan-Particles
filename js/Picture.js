@@ -7,8 +7,6 @@ var Picture = function(canvas, callback) {
 	this.canvas = canvas;
 	this.callback = callback;
 
-	this.properties = {};
-
 	this.init();
 }
 
