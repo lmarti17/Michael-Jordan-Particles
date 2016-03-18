@@ -12,7 +12,7 @@ var Particle = function(canvas, destinationX, destinationY) {
 
 Particle.prototype.init = function(destinationX, destinationY) {
 
-	this.properties.radius = Math.floor(Math.random() * 5);
+	this.properties.radius = this.getRandom(1,5);
 	this.properties.colors = ["#CE1141", "#061922", "#EEEEEE", "#CE1141", "#000000"];
 	this.properties.color = this.properties.colors[this.getRandom(0, 4)];
 	this.properties.x = this.giveDestinationX();
