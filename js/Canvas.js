@@ -19,6 +19,7 @@ Canvas.prototype.init = function() {
 	this.canvas.particleArray = [];
 	this.canvas.positionArray = [];
 	this.canvas.img = new Picture(this.canvas, this.callback.bind(this));
+	this.mouse = new Mouse();
 
 }
 

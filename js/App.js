@@ -9,7 +9,6 @@ App.prototype.init = function() {
 
 }
 
-
 $(document).ready(function() {
 
 	var app = new App();
