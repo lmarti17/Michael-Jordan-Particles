@@ -6,24 +6,44 @@ var Particle = function(canvas, destinationX, destinationY) {
 
 	this.canvas = canvas;
 	this.properties = {};
-	this.init(destinationX, destinationY);
+	this.variantProperties = {};
+    this.destinationX = destinationX;
+    this.destinationY = destinationY;
+	this.init();
 };
 
+Particle.prototype.init = function() {
 
-Particle.prototype.init = function(destinationX, destinationY) {
+    this.variantProperties.radiusMin = 1;
+    this.variantProperties.radiusMax = 5;
+    this.variantProperties.colors = {
+        color_1 : "#CE1141",
+        color_2 : "#061922",
+        color_3 : "#EEEEEE"
+    }
 
-	this.properties.radius = this.getRandom(1,5);
-	this.properties.colors = ["#CE1141", "#061922", "#EEEEEE", "#CE1141", "#000000"];
-	this.properties.color = this.properties.colors[this.getRandom(0, 4)];
-	this.properties.x = this.giveDestinationX();
-	this.properties.y = this.giveDestinationY();
-	this.properties.destinationX = destinationX;
-	this.properties.destinationY = destinationY;
-
+    this.createSettings();
 	// Draw the Particle when instanced
 	this.draw();
 
-	this.updatePosition(this.properties.destinationX, this.properties.destinationY);
+	this.updatePosition(this.destinationX, this.destinationY);
+}
+
+Particle.prototype.updateProperties = function(properties) {
+
+    if(properties){
+        this.variantProperties = properties;
+        this.createSettings();
+    }
+}
+
+Particle.prototype.createSettings = function(){
+
+    this.properties.radius = this.getRandom(this.variantProperties.radiusMin,this.variantProperties.radiusMax);
+    this.properties.color = this.getRandomColor();
+    this.properties.x = this.giveDestinationX();
+    this.properties.y = this.giveDestinationY();
+
 }
 
 // Method which draw a Particle
@@ -38,23 +58,24 @@ Particle.prototype.draw = function() {
 Particle.prototype.updatePosition = function(destinationX, destinationY) {
 	var self = this;
 	this.properties.tween = TweenLite.to(this.properties, this.getRandom(2, 7), {
-		// bezier: {
-		// 	curviness: 5,
-		// 	values: [{
-		// 		x: this.getRandom(0, this.canvas.Canvas.width),
-		// 		y: this.getRandom(0, this.canvas.Canvas.height)
-		// 	}, {
-		// 		x: this.getRandom(0, this.canvas.Canvas.width),
-		// 		y: this.getRandom(0, this.canvas.Canvas.height)
-		// 	}]
-		// },
 		ease: Power1.easeInOut,
 		x: destinationX,
 		y: destinationY,
 		onComplete: function() {
-			self.updatePosition(self.properties.destinationX + self.getRandom(-10, 10), self.properties.destinationY + self.getRandom(-10, 10));
+			self.updatePosition(self.destinationX + self.getRandom(-10, 10), self.destinationY + self.getRandom(-10, 10));
 		}
 	});
+}
+
+Particle.prototype.getRandomColor = function(){
+
+    var colorTab = []
+    var i = 0;
+    for(var key in this.variantProperties.colors) {
+        colorTab[i] = this.variantProperties.colors[key];
+        i += 1;
+    }
+    return colorTab[this.getRandom(0,3)]
 }
 
 // Method wich return a new X position for the object

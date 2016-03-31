@@ -7,7 +7,6 @@ var Canvas = function() {
 	this.canvas = {};
 
 	this.init();
-
 }
 
 Canvas.prototype.init = function() {
@@ -19,17 +18,20 @@ Canvas.prototype.init = function() {
 	this.canvas.particleArray = [];
 	this.canvas.positionArray = [];
 	this.canvas.img = new Picture(this.canvas, this.callback.bind(this));
-	this.mouse = new Mouse();
 
+    this.guiPropertiesToChange = {
+        radiusMin : 1,
+        radiusMax: 5,
+        colors: {
+        color_1: '#CE1141',
+        color_2: '#061922',
+        color_3: '#EEEEEE'}
+
+    }
+
+    this.gui_init();
+	// this.mouse = new Mouse();
 }
-
-Canvas.prototype.generateArray = function(numberParticle) {
-	var tab = [];
-	for (var i = 0; i < numberParticle; i++) {
-		tab[i] = new Particle(this.canvas);
-	};
-	return tab;
-};
 
 Canvas.prototype.callback = function(positions) {
 
@@ -53,33 +55,8 @@ Canvas.prototype.drawArray = function() {
 	});
 };
 
-Canvas.prototype.updateArray = function() {
-
-	var self = this;
-	var compteur = 0;
-
-	this.canvas.particleArray.forEach(function(e) {
-		// console.log(self.canvas.compteur);
-		// console.log(self.positionArray);
-		// compteur += 1;
-		// if (self.canvas.positionArray) {
-		// console.log(e);
-
-		// 	// console.log(self.canvas.positionArray[self.canvas.compteur]);
-		// 	// console.log(self.canvas.positionArray[self.canvas.compteur]);
-		// 	this.destinationX = self.canvas.positionArray[compteur];
-		// 	this.destinationY = self.canvas.positionArray[compteur];
-		// };
-
-		if (e.properties.tween.progress() >= 0.95) {
-		// e.updatePosition(this.destinationX, this.destinationY);
-		}
-	})
-};
-
 Canvas.prototype.loopArray = function() {
 	this.drawArray();
-	// this.updateArray();
 	window.requestAnimationFrame(this.loopArray.bind(this));
 }
 
@@ -96,5 +73,35 @@ Canvas.prototype.giveDestinationX = function() {
 // Method which return a new Y position for the object
 Canvas.prototype.giveDestinationY = function() {
 		return Math.floor(Math.random() * this.canvas.Canvas.height);
-	}
-	// End of the class Canvas
+}
+
+Canvas.prototype.gui_init = function(){
+    var gui = new dat.GUI();
+
+    var folder = gui.addFolder('Properties');
+
+    var particle_radius_min = folder.add(this.guiPropertiesToChange, 'radiusMin', 1, 4).step(1);
+    var particle_radius_max = folder.add(this.guiPropertiesToChange, 'radiusMax', 5, 10).step(1);
+    var particle_color_1 = folder.addColor(this.guiPropertiesToChange.colors, 'color_1');
+    var particle_color_2 = folder.addColor(this.guiPropertiesToChange.colors, 'color_2');
+    var particle_color_3 = folder.addColor(this.guiPropertiesToChange.colors, 'color_3');
+
+    folder.open();
+
+    particle_radius_min.onChange(this.gui_UpdateParticlesProperties.bind(this));
+    particle_radius_max.onChange(this.gui_UpdateParticlesProperties.bind(this));
+    particle_color_1.onChange(this.gui_UpdateParticlesProperties.bind(this));
+    particle_color_2.onChange(this.gui_UpdateParticlesProperties.bind(this));
+    particle_color_3.onChange(this.gui_UpdateParticlesProperties.bind(this));
+}
+
+Canvas.prototype.gui_UpdateParticlesProperties = function(){
+
+    var self = this;
+    this.canvas.particleArray.forEach(function(e){
+        e.updateProperties(self.guiPropertiesToChange);
+    })
+}
+
+
+// End of the class Canvas
