@@ -14,6 +14,9 @@ var Particle = function(canvas, destinationX, destinationY) {
 
 Particle.prototype.init = function() {
 
+    this.properties.x = this.giveDestinationX();
+    this.properties.y = this.giveDestinationY();
+
     this.variantProperties.radiusMin = 1;
     this.variantProperties.radiusMax = 5;
     this.variantProperties.colors = {
@@ -22,6 +25,7 @@ Particle.prototype.init = function() {
         color_3 : "#EEEEEE"
     }
 
+    // Set parameters that can change
     this.createSettings();
 	// Draw the Particle when instanced
 	this.draw();
@@ -33,17 +37,14 @@ Particle.prototype.updateProperties = function(properties) {
 
     if(properties){
         this.variantProperties = properties;
+        }
         this.createSettings();
-    }
 }
 
 Particle.prototype.createSettings = function(){
 
     this.properties.radius = this.getRandom(this.variantProperties.radiusMin,this.variantProperties.radiusMax);
     this.properties.color = this.getRandomColor();
-    this.properties.x = this.giveDestinationX();
-    this.properties.y = this.giveDestinationY();
-
 }
 
 // Method which draw a Particle
