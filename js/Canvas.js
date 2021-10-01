@@ -11,8 +11,10 @@ var Canvas = function () {
 Canvas.prototype.init = function () {
   this.canvas.Canvas = document.getElementById("canvas");
   this.canvas.ctx = this.canvas.Canvas.getContext("2d");
-  this.canvas.Canvas.width = $(window).width();
-  this.canvas.Canvas.height = $(window).height();
+  let dpr = window.devicePixelRatio || 1;
+  this.canvas.Canvas.width = window.innerWidth * dpr;
+  this.canvas.Canvas.height = window.innerHeight * dpr;
+
   this.canvas.particleArray = [];
   this.canvas.positionArray = [];
   this.canvas.img = new Picture(this.canvas, this.callback.bind(this));
