@@ -15,8 +15,8 @@ Particle.prototype.init = function () {
   this.properties.x = this.giveDestinationX();
   this.properties.y = this.giveDestinationY();
 
-  this.variantProperties.radiusMin = 1;
-  this.variantProperties.radiusMax = 5;
+  this.variantProperties.radiusMin = 5;
+  this.variantProperties.radiusMax = 10;
   this.variantProperties.colors = {
     color_1: "#CE1141",
     color_2: "#061922",
