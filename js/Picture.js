@@ -34,7 +34,7 @@ Picture.prototype.init = function () {
     ).data;
     var positions = [];
 
-    for (var i = 0; i < data.length - 136; i += 136) {
+    for (var i = 0; i < data.length - 256; i += 256) {
       if (
         data[i] == 0 &&
         data[i + 1] == 0 &&
